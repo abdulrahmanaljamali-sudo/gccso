@@ -3539,5 +3539,24 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+
+const auth = getAuth(app);
+
+window.handleLogin = function(event) {
+    event.preventDefault();
+    const email = event.target.elements['login-username'].value;
+    const password = event.target.elements['login-password'].value;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log("تم تسجيل الدخول بنجاح");
+            enterMainApp();
+        })
+        .catch((error) => {
+            console.error("خطأ في تسجيل الدخول:", error.message);
+            alert("فشل تسجيل الدخول: تأكد من البيانات");
+        });
+};
 </script></body>
 </html>
