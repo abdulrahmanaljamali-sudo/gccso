@@ -3548,7 +3548,7 @@ window.handleLogin = function(event) {
     const email = event.target.elements['login-username'].value;
     const password = event.target.elements['login-password'].value;
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+.then((userCredential) => {
             window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
             document.getElementById('login-screen').style.display = 'none';
             enterMainApp();
