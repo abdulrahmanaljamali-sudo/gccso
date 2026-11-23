@@ -3551,8 +3551,7 @@ window.handleLogin = function(event) {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
     window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
-    enterMainApp();
-})
+    enterMainApp(document.getElementById('login-screen').style.display = 'none';);
         .catch((error) => {
             console.error("خطأ في تسجيل الدخول:", error.message);
             alert("فشل تسجيل الدخول: تأكد من البيانات");
