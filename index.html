@@ -3563,7 +3563,7 @@ window.handleLogin = async function (event) {
     const accountEmail = (firebaseUser.email || '').trim().toLowerCase();
     const matchingUsers = appState.users.filter(user =>
         accountEmail && (user.email || '').trim().toLowerCase() === accountEmail
-    );
+    );console.log('عدد سجلات المستخدم المطابقة:', matchingUsers.length);
 
     if (matchingUsers.length !== 1) {
         showToast('لازم يكون لهذا البريد سجل مستخدم واحد في بيانات الموقع.', 'error');
