@@ -3542,10 +3542,8 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
-
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 const auth = getAuth(app);
-
 window.handleLogin = function(event) {
     event.preventDefault();
     const email = event.target.elements['login-username'].value;
