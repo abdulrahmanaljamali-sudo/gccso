@@ -3544,20 +3544,49 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
   const app = initializeApp(firebaseConfig);
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 const auth = getAuth(app);
-window.handleLogin = function(event) {
+window.handleLogin = async function (event) {
     event.preventDefault();
-    const email = event.target.elements['login-username'].value;
-    const password = event.target.elements['login-password'].value;
-    signInWithEmailAndPassword(auth, email, password)
-.then((userCredential) => {
-        currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
-        document.getElementById('login-screen').style.display = 'none';
+
+    const email = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    let firebaseUser;
+    try {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        firebaseUser = result.user;
+    } catch (error) {
+        console.error('خطأ في تسجيل الدخول:', error);
+        showToast('تعذر تسجيل الدخول. تأكدي من البريد وكلمة المرور.', 'error');
+        return;
+    }
+
+    const accountEmail = (firebaseUser.email || '').trim().toLowerCase();
+    const matchingUsers = appState.users.filter(user =>
+        accountEmail && (user.email || '').trim().toLowerCase() === accountEmail
+    );
+
+    if (matchingUsers.length !== 1) {
+        showToast('لازم يكون لهذا البريد سجل مستخدم واحد في بيانات الموقع.', 'error');
+        return;
+    }
+
+    currentUser = matchingUsers[0];
+    currentUser.online = true;
+
+    const now = new Date();
+    currentUser.lastSeen = now.toLocaleDateString('en-CA') + ' ' +
+        now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    saveState();
+
+    document.getElementById('login-screen').classList.add('hidden');
+
+    if (!currentUser.profileCompleted && currentUser.role !== 'admin') {
+        const setupScreen = document.getElementById('profile-setup-screen');
+        setupScreen.classList.remove('hidden');
+        setupScreen.classList.add('flex');
+    } else {
         enterMainApp();
-    })
-    .catch((error) => {
-        console.error("خطأ في تسجيل الدخول:", error.message);
-        alert("فشل تسجيل الدخول: تأكد من البيانات");
-    });
+    }
 };
 </script>
 </body>
