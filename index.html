@@ -3550,12 +3550,20 @@ window.handleLogin = function(event) {
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-    window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
-    enterMainApp(document.getElementById('login-screen').style.display = 'none';);
+    window.handleLogin = function(event) {
+    event.preventDefault();
+    const email = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
+            document.getElementById('login-screen').style.display = 'none';
+            enterMainApp();
+        })
         .catch((error) => {
             console.error("خطأ في تسجيل الدخول:", error.message);
             alert("فشل تسجيل الدخول: تأكد من البيانات");
         });
-};
 </script></body>
 </html>
