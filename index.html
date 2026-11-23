@@ -3547,14 +3547,6 @@ window.handleLogin = function(event) {
     event.preventDefault();
     const email = event.target.elements['login-username'].value;
     const password = event.target.elements['login-password'].value;
-
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-    window.handleLogin = function(event) {
-    event.preventDefault();
-    const email = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
