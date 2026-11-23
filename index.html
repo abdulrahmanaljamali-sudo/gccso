@@ -3550,9 +3550,9 @@ window.handleLogin = function(event) {
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            console.log("تم تسجيل الدخول بنجاح");
-            enterMainApp();
-        })
+    window.currentUser = { email: userCredential.user.email, fullName: 'مستخدم' };
+    enterMainApp();
+})
         .catch((error) => {
             console.error("خطأ في تسجيل الدخول:", error.message);
             alert("فشل تسجيل الدخول: تأكد من البيانات");
