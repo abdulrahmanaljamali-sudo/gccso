@@ -3560,12 +3560,31 @@ window.handleLogin = async function (event) {
         return;
     }
 
-    const accountEmail = (firebaseUser.email || '').trim().toLowerCase();
+       const accountEmail = (firebaseUser.email || '').trim().toLowerCase();
+
+    if (accountEmail === 'ar@smarthomes.sa') {
+        const emailAlreadyLinked = appState.users.some(user =>
+            (user.email || '').trim().toLowerCase() === accountEmail
+        );
+
+        if (!emailAlreadyLinked) {
+            const savedAdmin = appState.users.find(user =>
+                user.id === 'u_admin' &&
+                user.role === 'admin' &&
+                (user.email || '').trim().toLowerCase() === 'admin@medcenters.com'
+            );
+
+            if (savedAdmin) {
+                savedAdmin.email = accountEmail;
+            }
+        }
+    }
+
     const matchingUsers = appState.users.filter(user =>
         accountEmail && (user.email || '').trim().toLowerCase() === accountEmail
-    );console.log('عدد سجلات المستخدم المطابقة:', matchingUsers.length);
-
-    if (matchingUsers.length !== 1) {
+    );
+    console.log('عدد سجلات المستخدم المطابقة:', matchingUsers.length);
+        if (matchingUsers.length !== 1) {
         showToast('لازم يكون لهذا البريد سجل مستخدم واحد في بيانات الموقع.', 'error');
         return;
     }
